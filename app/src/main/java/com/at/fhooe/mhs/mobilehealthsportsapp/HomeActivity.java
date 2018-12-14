@@ -27,7 +27,7 @@ public class HomeActivity extends AppCompatActivity {
         chartingButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(HomeActivity.this, ChartingActivity.class));
+                startActivity(new Intent(HomeActivity.this, Main2Activity.class));
             }
         });
     }
