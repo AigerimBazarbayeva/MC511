@@ -25,6 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:parentActivityName=".HomeActivity" />
+        <!--<activity
+            android:name=".ChartingActivity"
+            android:parentActivityName=".HomeActivity" />-->
+        <activity
+            android:name=".Main2Activity"
+            android:label="@string/title_activity_main2"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:parentActivityName=".HomeActivity"/>
     </application>
 
 </manifest>
