@@ -1,4 +1,4 @@
-package fh.ooe.mcm.inactivitytracker.UI;
+package fh.ooe.mcm.inactivitytracker.ui;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;

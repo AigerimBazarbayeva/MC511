@@ -1,4 +1,4 @@
-package com.at.fhooe.mhs.mobilehealthsportsapp;
+package fh.ooe.mcm.inactivitytracker.charts;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import fh.ooe.mcm.inactivitytracker.R;
 
 public class Main2Activity extends AppCompatActivity {
 

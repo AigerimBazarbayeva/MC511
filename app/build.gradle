@@ -30,6 +30,9 @@ android {
             path "CMakeLists.txt"
         }
     }
+    packagingOptions {
+        exclude 'META-INF/proguard/androidx-annotations.pro'
+    }
 }
 
 dependencies {

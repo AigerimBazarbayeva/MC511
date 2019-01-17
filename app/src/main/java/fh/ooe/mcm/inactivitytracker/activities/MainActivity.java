@@ -24,7 +24,7 @@ import fh.ooe.mcm.inactivitytracker.utils.LockScreenReceiver;
 import fh.ooe.mcm.inactivitytracker.utils.Recognizer;
 import fh.ooe.mcm.inactivitytracker.utils.TextToSpeechManager;
 
-public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, Observable, Observer {
+public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, Observable { //}, Observer {
     //TextToSpeech tts;
 
     ArrayList<Observer> observers;
@@ -59,17 +59,15 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                                                 databaseHandler);
 
         addObserver(recognizer);
-        recognizer.addObserver(this);
+//        recognizer.addObserver(this);
 
 
         SwitchCompat measurementToggle = findViewById(R.id.measurementToggle);
         if(measurementToggle != null) {
             measurementToggle.setOnCheckedChangeListener(this);
         }
-        numberOfRecords = findViewById(R.id.numberOfRecords);
-        numberOfRecords.setText(String.valueOf(databaseHandler.getAllActivitiesForDays(0, 0).size()));
         notifyAll(measurementToggle.isChecked());
-
+        //databaseHandler.getAllActivitiesForDays(0, 0);
 //        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
 //
 //            @Override
@@ -107,10 +105,6 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
         observers.add(observer);
     }
 
-    @Override
-    public void update(Observable observable, Object object) {
-        numberOfRecords.setText(String.valueOf(databaseHandler.getAllActivitiesForDays(0, 0).size()));
-    }
 
 //    public void convertTextToSpeech(String text) {
 //        if(text == null || "".equals(text))

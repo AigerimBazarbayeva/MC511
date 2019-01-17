@@ -1,4 +1,4 @@
-package com.at.fhooe.mhs.mobilehealthsportsapp;
+package fh.ooe.mcm.inactivitytracker.charts;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -14,6 +14,8 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import fh.ooe.mcm.inactivitytracker.R;
 
 public class Tab1Hour extends Fragment{
 

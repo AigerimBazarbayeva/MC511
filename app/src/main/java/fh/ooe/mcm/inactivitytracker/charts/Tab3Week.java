@@ -1,7 +1,10 @@
-package com.at.fhooe.mhs.mobilehealthsportsapp;
+package fh.ooe.mcm.inactivitytracker.charts;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -11,14 +14,16 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 
-public class ChartingActivity extends AppCompatActivity {
+import fh.ooe.mcm.inactivitytracker.R;
+
+public class Tab3Week extends Fragment {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_charting);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.tab3week, container, false);
 
-        BarChart barChart = (BarChart) findViewById(R.id.barchart);
+        BarChart barChart = (BarChart) rootView.findViewById(R.id.barchart);
 
         barChart.setDrawBarShadow(false);
         barChart.setDrawValueAboveBar(true);
@@ -43,5 +48,6 @@ public class ChartingActivity extends AppCompatActivity {
         data.setBarWidth(0.9f);
 
         barChart.setData(data);
+        return rootView;
     }
 }
