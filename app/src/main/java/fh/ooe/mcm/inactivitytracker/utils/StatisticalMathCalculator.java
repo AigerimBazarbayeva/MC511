@@ -21,7 +21,7 @@ public class StatisticalMathCalculator {
             int index = data.size()/2;
             median = (data.get(index) + data.get(index+1))/2;
         } else {
-            data.get((int)Math.ceil(data.size()/2));
+            median = data.get((int)Math.ceil(data.size()/2));
         }
         return twoDigits(median);
     }
@@ -34,24 +34,21 @@ public class StatisticalMathCalculator {
         return twoDigits(Collections.min(data));
     }
 
-    public static double calculateStandardDeviation(ArrayList<Double> data, double avg) {
-        double std = 0;
-        for (double value : data) {
-            std += Math.pow(value - avg, 2);
-        }
-        std = Math.sqrt(std / data.size());
-        return twoDigits(std);
-    }
+    public static int calculateZerocr(ArrayList<Double> data) {
+        double mean = calculateAverage(data);
+        int counter = 0;
+        double previousValue = data.get(0) - mean;
 
-    public static double calculateAbsoluteDeviation(ArrayList<Double> data, double avg) {
-        double absDev = 0;
-        for (double value : data) {
-            absDev += Math.abs(value - avg);
+        for (int i = 1; i < data.size(); i++) {
+            double centeredValue = data.get(i) - mean;
+            if(centeredValue <= 0 && previousValue > 0 ||
+                    centeredValue >= 0 && previousValue < 0  ) {
+                counter++;
+            }
         }
-        absDev /= data.size();
-        return twoDigits(absDev);
-    }
 
+        return counter;
+    }
     public static double calculateResultant(ArrayList<Double> xData, ArrayList<Double> yData, ArrayList<Double> zData) {
         double resultant = 0;
         for (int i = 0; i < xData.size(); i++) {
@@ -62,33 +59,6 @@ public class StatisticalMathCalculator {
         }
         resultant /= xData.size();
         return twoDigits(resultant);
-    }
-
-    public static double[] calculateBins(ArrayList<Double> data) {
-        double[] bins = new double[10];
-
-        double max = Collections.max(data);
-        double min = Collections.min(data);
-
-        double range = max - min;
-        double bin = range / 10;
-
-        double offset = 0 - min;
-
-
-        for (double value : data) {
-            if (value < max) {
-                int index = (int) (Math.abs((value + offset) / bin));
-                bins[index]++;
-            }
-        }
-
-        for (int i = 0; i < bins.length; i++) {
-            bins[i] /= (data.size() - 1);
-            bins[i] = twoDigits(bins[i]);
-        }
-
-        return bins;
     }
 
     static double twoDigits(double value) {

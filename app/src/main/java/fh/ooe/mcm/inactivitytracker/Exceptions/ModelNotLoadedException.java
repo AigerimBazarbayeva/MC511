@@ -1,4 +1,4 @@
-package fh.ooe.mcm.inactivitytracker.Exceptions;
+package fh.ooe.mcm.inactivitytracker.exceptions;
 
 public class ModelNotLoadedException extends Exception {
 

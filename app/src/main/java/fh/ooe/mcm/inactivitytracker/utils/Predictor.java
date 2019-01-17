@@ -1,15 +1,16 @@
 package fh.ooe.mcm.inactivitytracker.utils;
 
+import android.app.Activity;
 import android.content.res.AssetManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fh.ooe.mcm.inactivitytracker.Exceptions.ModelNotLoadedException;
+import fh.ooe.mcm.inactivitytracker.Activities;
 import fh.ooe.mcm.inactivitytracker.Features;
+import fh.ooe.mcm.inactivitytracker.exceptions.ModelNotLoadedException;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observable;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observer;
 import weka.classifiers.Classifier;
@@ -22,11 +23,11 @@ public class Predictor implements Observer, Observable {
     ArrayList<Observer> observers;
     private Classifier classifier = null;
 
-    public Predictor(Observer observer, AssetManager assetManager) {
+    public Predictor(AssetManager assetManager) {
         observers = new ArrayList<>();
-        observers.add(observer);
+
         try{
-            classifier = (Classifier) weka.core.SerializationHelper.read(assetManager.open("activityRecognition_RF2.model"));
+            classifier = (Classifier) weka.core.SerializationHelper.read(assetManager.open("activityRecognition_RF_2sec.model"));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (Exception e) {
@@ -36,13 +37,14 @@ public class Predictor implements Observer, Observable {
 
     @Override
     public void update(Observable observable, Object object) {
-        if(observable instanceof Recognizer) {
+        if(observable instanceof FeatureDerivator) {
             if(object instanceof Features) {
                 Features features = (Features)object;
                 try {
                     predict(features);
                 } catch(Exception e) {
                     //how to display the error from here ? ;x
+                    e.printStackTrace();
                 }
             }
         }
@@ -59,21 +61,6 @@ public class Predictor implements Observer, Observable {
             //Toast.makeText(this, "Model not loaded!", Toast.LENGTH_SHORT).show();
         }
 
-        final ArrayList<Attribute> xBins = new ArrayList<>();
-        final ArrayList<Attribute> yBins = new ArrayList<>();
-        final ArrayList<Attribute> zBins = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            xBins.add(new Attribute("X" + i));
-        }
-        for (int i = 0; i < 10; i++) {
-            yBins.add(new Attribute("Y" + i));
-        }
-        for (int i = 0; i < 10; i++) {
-            zBins.add(new Attribute("Z" + i));
-        }
-        final Attribute xAvg = new Attribute("XAVG");
-        final Attribute yAvg = new Attribute("YAVG");
-        final Attribute zAvg = new Attribute("ZAVG");
         final Attribute xMedian = new Attribute("XMED");
         final Attribute yMedian = new Attribute("YMED");
         final Attribute zMedian = new Attribute("ZMED");
@@ -83,35 +70,14 @@ public class Predictor implements Observer, Observable {
         final Attribute xMin = new Attribute("XMIN");
         final Attribute yMin = new Attribute("YMIN");
         final Attribute zMin = new Attribute("ZMIN");
-        final Attribute xStandDev = new Attribute("XSTANDDEV");
-        final Attribute yStandDev = new Attribute("YSTANDDEV");
-        final Attribute zStandDev = new Attribute("ZSTANDDEV");
+        final Attribute xZerocr = new Attribute("ZEROCRX");
+        final Attribute yZerocr = new Attribute("ZEROCRY");
+        final Attribute zZerocr = new Attribute("ZEROCRZ");
         final Attribute resultant = new Attribute("RESULTANT");
-        final List<String> classes = new ArrayList<String>() {
-            {
-                add("Downstairs");// cls nr 1
-                add("Jogging"); // cls nr 2
-                add("Sitting"); // cls nr 3
-                add("Standing"); // cls nr 4
-                add("Upstairs"); // cls nr 5
-                add("Walking"); // cls nr 6
-            }
-        };
+
 
         ArrayList<Attribute> attributeList = new ArrayList<Attribute>(2) {
             {
-                for (Attribute bin : xBins) {
-                    add(bin);
-                }
-                for (Attribute bin : yBins) {
-                    add(bin);
-                }
-                for (Attribute bin : zBins) {
-                    add(bin);
-                }
-                add(xAvg);
-                add(yAvg);
-                add(zAvg);
                 add(xMedian);
                 add(yMedian);
                 add(zMedian);
@@ -121,11 +87,11 @@ public class Predictor implements Observer, Observable {
                 add(xMin);
                 add(yMin);
                 add(zMin);
-                add(xStandDev);
-                add(yStandDev);
-                add(zStandDev);
+                add(xZerocr);
+                add(yZerocr);
+                add(zZerocr);
                 add(resultant);
-                Attribute attributeClass = new Attribute("@@class@@", classes);
+                Attribute attributeClass = new Attribute("@@class@@", Activities.classes);
                 add(attributeClass);
             }
         };
@@ -136,34 +102,18 @@ public class Predictor implements Observer, Observable {
 
         DenseInstance newInstance = new DenseInstance(dataUnpredicted.numAttributes()) {
             {
-                double [] featuresXBins = features.getXBins();
-                double [] featuresYBins = features.getYBins();
-                double [] featuresZBins = features.getZBins();
-
-                for (int i = 0; i < 10; i++) {
-                    setValue(xBins.get(i), featuresXBins[i]);
-                }
-                for (int i = 0; i < 10; i++) {
-                    setValue(xBins.get(i), featuresYBins[i]);
-                }
-                for (int i = 0; i < 10; i++) {
-                    setValue(xBins.get(i), featuresZBins[i]);
-                }
-                setValue(xAvg, features.getXAvg());
-                setValue(yAvg, features.getYAvg());
-                setValue(zAvg, features.getZAvg());
-                setValue(xAvg, features.getXMedian());
-                setValue(yAvg, features.getYMedian());
-                setValue(zAvg, features.getZMedian());
-                setValue(xAvg, features.getXMax());
-                setValue(yAvg, features.getYMax());
-                setValue(zAvg, features.getZMax());
-                setValue(xAvg, features.getXMin());
-                setValue(yAvg, features.getYMin());
-                setValue(zAvg, features.getZMin());
-                setValue(xStandDev, features.getXStdDev());
-                setValue(yStandDev, features.getYStdDev());
-                setValue(zStandDev, features.getZStdDev());
+                setValue(xMedian, features.getXMedian());
+                setValue(yMedian, features.getYMedian());
+                setValue(zMedian, features.getZMedian());
+                setValue(xMax, features.getXMax());
+                setValue(yMax, features.getYMax());
+                setValue(zMax, features.getZMax());
+                setValue(xMin, features.getXMin());
+                setValue(yMin, features.getYMin());
+                setValue(zMin, features.getZMin());
+                setValue(xZerocr, features.getXZerocr());
+                setValue(yZerocr, features.getYZerocr());
+                setValue(zZerocr, features.getZZerocr());
                 setValue(resultant, features.getResultant());
             }
         };
@@ -171,10 +121,9 @@ public class Predictor implements Observer, Observable {
         newInstance.setDataset(dataUnpredicted);
 
         try {
-            double result = classifier.classifyInstance(newInstance);
-            String className = classes.get(new Double(result).intValue());
-            notifyAll(className);
-            Log.i("Class:", className);
+            int result = new Double(classifier.classifyInstance(newInstance)).intValue();
+            notifyAll(result);
+            Log.i("Class:", Activities.getNameOf(result) + System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }

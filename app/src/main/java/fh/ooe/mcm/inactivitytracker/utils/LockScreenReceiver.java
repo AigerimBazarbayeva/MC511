@@ -13,9 +13,9 @@ public class LockScreenReceiver extends BroadcastReceiver implements Observable 
 
     ArrayList<Observer> observers;
 
-    LockScreenReceiver(Observer observer) {
+    public LockScreenReceiver() { //Observer observer) {
         observers = new ArrayList<>();
-        observers.add(observer);
+        //observers.add(observer);
     }
 
     @Override

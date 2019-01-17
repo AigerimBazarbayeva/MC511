@@ -1,15 +1,11 @@
 package fh.ooe.mcm.inactivitytracker.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 
 import fh.ooe.mcm.inactivitytracker.R;
-import fh.ooe.mcm.inactivitytracker.utils.Recognizer;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

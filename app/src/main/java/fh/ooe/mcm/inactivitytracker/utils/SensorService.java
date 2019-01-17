@@ -1,6 +1,8 @@
 package fh.ooe.mcm.inactivitytracker.utils;
 
+import android.app.KeyguardManager;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -9,6 +11,7 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.IBinder;
+import android.os.Looper;
 import android.os.PowerManager;
 import android.os.Process;
 
@@ -25,15 +28,16 @@ public class SensorService extends Service implements SensorEventListener, Obser
     private Sensor sensor;
 
     HandlerThread sensorThread;
+    HandlerThread computationThread;
     Handler sensorHandler;
+    Handler computationHandler;
 
     PowerManager.WakeLock wakeLock;
 
     ArrayList<Observer> observers;
 
-    public SensorService(Observer observer, SensorManager sensorManager, PowerManager powerManager) {
+    public SensorService(SensorManager sensorManager, PowerManager powerManager) {
         observers = new ArrayList<>();
-        observers.add(observer);
 
         this.sensorManager = sensorManager;
         this.sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -41,7 +45,18 @@ public class SensorService extends Service implements SensorEventListener, Obser
         sensorThread = new HandlerThread("Sensor thread", Process.THREAD_PRIORITY_BACKGROUND);
         sensorThread.start();
         sensorHandler = new Handler(sensorThread.getLooper());
-        sensorManager.registerListener(this, sensor, READING_RATE, sensorHandler);
+
+        computationThread = new HandlerThread("Computation thread", Process.THREAD_PRIORITY_BACKGROUND);
+        computationThread.start();
+        computationHandler = new Handler(computationThread.getLooper());
+
+        if(!powerManager.isScreenOn()) {
+            // it is locked
+            sensorManager.registerListener(this, sensor, READING_RATE, sensorHandler);
+        } else {
+            //it is not locked
+            sensorManager.unregisterListener(this, sensor);
+        }
 
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "myApp:myWakeTag");
         wakeLock.acquire();
@@ -79,7 +94,9 @@ public class SensorService extends Service implements SensorEventListener, Obser
     @Override
     public void notifyAll(Object object) {
         for(Observer observer: observers) {
-            observer.update(this, object);
+            computationHandler.post(() ->
+                    observer.update(this, object)
+            );
         }
     }
 
@@ -94,9 +111,9 @@ public class SensorService extends Service implements SensorEventListener, Obser
             if(object instanceof Boolean) {
                 Boolean shouldBeSensing = (Boolean) object;
                 if(shouldBeSensing) {
-                    sensorManager.unregisterListener(this, sensor);
-                } else {
                     sensorManager.registerListener(this, sensor, READING_RATE, sensorHandler);
+                } else {
+                    sensorManager.unregisterListener(this, sensor);
                 }
             }
         }

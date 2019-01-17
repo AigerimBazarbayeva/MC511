@@ -8,7 +8,6 @@
 //import java.io.IOException;
 //import java.util.ArrayList;
 //
-//import fh.ooe.mcm.inactivitytracker.activities.MainActivity;
 //import fh.ooe.mcm.inactivitytracker.interfaces.Observer;
 //
 //public class Logger extends AsyncTask<ArrayList<String>, Integer, Void> {
