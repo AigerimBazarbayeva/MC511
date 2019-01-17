@@ -1,5 +1,6 @@
 <resources>
-    <string name="app_name">MobileHealthSportsApp</string>
+    <string name="app_name">InactivityTracker</string>
+    <string name="title_activity_splash_screen">InactivityTracker</string>
     <string name="title_activity_main2">Main2Activity</string>
     <string name="tab_text_1">Hour</string>
     <string name="tab_text_2">Day</string>
