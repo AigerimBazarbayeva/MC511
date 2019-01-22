@@ -68,7 +68,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Observer, Obser
         db.close();
     }
 
-    public Map<Long, String> getAllActivitiesForDays(long timestampFrom, long timestampTo) {
+    public Map<Long, String> getAllPhysicalActivitiesForDays(long timestampFrom, long timestampTo) {
         if(timestampTo == 0) {
             timestampTo = System.currentTimeMillis();
         }
@@ -94,7 +94,7 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Observer, Obser
         return activities;
     }
 
-    public void deleteActivities(long timestampFrom, long timestampTo) {
+    public void deletePhysicalActivities(long timestampFrom, long timestampTo) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_ACTIVITIES, KEY_TIMESTAMP + " >= ? AND" + KEY_TIMESTAMP + "<= ?",
                 new String[]{String.valueOf(timestampFrom), String.valueOf(timestampTo)});
@@ -113,9 +113,6 @@ public class DatabaseHandler extends SQLiteOpenHelper implements Observer, Obser
                 for(Map.Entry<Long, String> activity: activities.entrySet()) {
                     addActivity(activity.getKey(), activity.getValue());
                 }
-//                if(activities.size() > 0) {
-//                    notifyAll("SAVED");
-//                }
             }
        }
     }

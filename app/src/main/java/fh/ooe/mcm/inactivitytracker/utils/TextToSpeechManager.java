@@ -5,7 +5,7 @@ import android.util.Log;
 
 import java.util.Locale;
 
-import fh.ooe.mcm.inactivitytracker.Activities;
+import fh.ooe.mcm.inactivitytracker.PhysicalActivities;
 import fh.ooe.mcm.inactivitytracker.activities.MainActivity;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observable;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observer;
@@ -51,7 +51,7 @@ public class TextToSpeechManager implements Observer {
     public void update(Observable observable, Object object) {
         if(observable instanceof Predictor) {
             if(object instanceof Integer) {
-                parent.runOnUiThread(() -> convertTextToSpeech(Activities.getNameOf((int) object)));
+                parent.runOnUiThread(() -> convertTextToSpeech(PhysicalActivities.getNameOf((int) object)));
             }
         } else if(observable instanceof DatabaseHandler) {
             if(object instanceof String) {

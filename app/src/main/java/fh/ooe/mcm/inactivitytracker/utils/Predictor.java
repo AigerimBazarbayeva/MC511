@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import fh.ooe.mcm.inactivitytracker.Activities;
+import fh.ooe.mcm.inactivitytracker.PhysicalActivities;
 import fh.ooe.mcm.inactivitytracker.Features;
 import fh.ooe.mcm.inactivitytracker.exceptions.ModelNotLoadedException;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observable;
@@ -91,7 +91,7 @@ public class Predictor implements Observer, Observable {
                 add(yZerocr);
                 add(zZerocr);
                 add(resultant);
-                Attribute attributeClass = new Attribute("@@class@@", Activities.classes);
+                Attribute attributeClass = new Attribute("@@class@@", PhysicalActivities.classes);
                 add(attributeClass);
             }
         };
@@ -123,7 +123,7 @@ public class Predictor implements Observer, Observable {
         try {
             int result = new Double(classifier.classifyInstance(newInstance)).intValue();
             notifyAll(result);
-            Log.i("Class:", Activities.getNameOf(result) + System.currentTimeMillis());
+            Log.i("Class:", PhysicalActivities.getNameOf(result) + System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }

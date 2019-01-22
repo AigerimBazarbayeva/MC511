@@ -3,7 +3,7 @@ package fh.ooe.mcm.inactivitytracker;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Activities {
+public class PhysicalActivities {
 
     public final static List<String> classes = new ArrayList<String>() {
         {

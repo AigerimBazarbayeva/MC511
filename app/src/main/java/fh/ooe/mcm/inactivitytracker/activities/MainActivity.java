@@ -3,12 +3,16 @@ package fh.ooe.mcm.inactivitytracker.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -19,17 +23,20 @@ import java.util.ArrayList;
 import fh.ooe.mcm.inactivitytracker.R;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observable;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observer;
+import fh.ooe.mcm.inactivitytracker.ui.CircleButton;
 import fh.ooe.mcm.inactivitytracker.utils.DatabaseHandler;
 import fh.ooe.mcm.inactivitytracker.utils.LockScreenReceiver;
 import fh.ooe.mcm.inactivitytracker.utils.Recognizer;
 import fh.ooe.mcm.inactivitytracker.utils.TextToSpeechManager;
 
-public class MainActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener, Observable { //}, Observer {
-    //TextToSpeech tts;
+public class MainActivity extends AppCompatActivity implements Observable {
+
+    final String TRACKING_PREFERENCE = "TRACKING_PREF";
+    final String TRACKING_KEY = "TRACKING";
 
     ArrayList<Observer> observers;
-    TextView numberOfRecords;
     DatabaseHandler databaseHandler;
+    SharedPreferences trackingPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,38 +66,46 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
                                                 databaseHandler);
 
         addObserver(recognizer);
-//        recognizer.addObserver(this);
+
+        CircleButton dataEntryButton = findViewById(R.id.dataEntryButton);
+        CircleButton chartingButton = findViewById(R.id.chartingButton);
+        CircleButton predictionButton = findViewById(R.id.predictionButton);
+        SwitchCompat trackingSwitch = findViewById(R.id.trackingSwitch);
 
 
-        SwitchCompat measurementToggle = findViewById(R.id.measurementToggle);
-        if(measurementToggle != null) {
-            measurementToggle.setOnCheckedChangeListener(this);
+        if(dataEntryButton != null) {
+            dataEntryButton.setOnClickListener(view -> {
+                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
+                startActivity(dataEntryIntent);
+            });
         }
-        notifyAll(measurementToggle.isChecked());
-        //databaseHandler.getAllActivitiesForDays(0, 0);
-//        tts = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
-//
-//            @Override
-//            public void onInit(int status) {
-//                if(status == TextToSpeech.SUCCESS){
-//                    int result=tts.setLanguage(Locale.US);
-//                    if(result == TextToSpeech.LANG_MISSING_DATA ||
-//                            result==TextToSpeech.LANG_NOT_SUPPORTED){
-//                        Log.e("error", "This Language is not supported");
-//                    }
-//                    else{
-//                        convertTextToSpeech("");
-//                    }
-//                }
-//                else
-//                    Log.e("error", "Initilization Failed!");
-//            }
-//        });
-    }
+//        if(chartingButton != null) {
+//            chartingButton.setOnClickListener(view -> {
+//                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
+//                startActivity(dataEntryIntent);
+//            });
+//        }
+//        if(predictionButton != null) {
+//            predictionButton.setOnClickListener(view -> {
+//                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
+//                startActivity(dataEntryIntent);
+//            });
+//        }
 
-    @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-       notifyAll(isChecked);
+        if(trackingSwitch != null) {
+            trackingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                notifyAll(isChecked);
+                Editor editor = trackingPreferences.edit();
+                editor.putBoolean(TRACKING_KEY, trackingSwitch.isChecked());
+                editor.commit();
+            });
+        }
+
+        trackingPreferences = getSharedPreferences(TRACKING_PREFERENCE, Context.MODE_PRIVATE);
+        if(trackingPreferences.contains(TRACKING_KEY)) {
+            trackingSwitch.setChecked(trackingPreferences.getBoolean(TRACKING_KEY, false));
+        }
+        notifyAll(trackingSwitch.isChecked());
     }
 
     @Override
@@ -104,28 +119,5 @@ public class MainActivity extends AppCompatActivity implements CompoundButton.On
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
-
-
-//    public void convertTextToSpeech(String text) {
-//        if(text == null || "".equals(text))
-//        {
-//            text = "Content not available";
-//        }
-//
-//        tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
-//    }
-
-//    public void update(Observable observable, Object object) {
-//        if(observable instanceof Recognizer) {
-//            if(object instanceof String) {
-//                final String text = (String) object;
-//                runOnUiThread(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        convertTextToSpeech(text);
-//                    }
-//                });
-//            }
-//        }
-//    }
+    
 }

@@ -22,20 +22,27 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"
             android:parentActivityName=".charts.HomeActivity" />
-        <!--<activity
+        <!--
+            <activity
             android:name=".ChartingActivity"
-            android:parentActivityName=".HomeActivity" />-->
+            android:parentActivityName=".HomeActivity" />
+        -->
         <activity
             android:name=".charts.Main2Activity"
             android:label="@string/title_activity_main2"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:parentActivityName=".charts.HomeActivity"/>
+            android:parentActivityName=".charts.HomeActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activities.DataEntryActivity"
+            android:label="@string/title_activity_data_entry"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import fh.ooe.mcm.inactivitytracker.Activities;
+import fh.ooe.mcm.inactivitytracker.PhysicalActivities;
 import fh.ooe.mcm.inactivitytracker.Features;
 import fh.ooe.mcm.inactivitytracker.activities.MainActivity;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observable;
@@ -28,21 +28,16 @@ import fh.ooe.mcm.inactivitytracker.interfaces.Observer;
 
 public class Recognizer implements Observer, Observable {
 
-    //final int WORKING_RATE = 2000; // two seconds
-
     ArrayList<Observer> observers;
     ArrayList<Integer> activities;
     ArrayList<Long> timestamps;
 
-    Map<Long, String> filteredActivities;
+    Map<Long, String> filteredPhysicalActivities;
 
     HandlerThread databaseThread;
     Handler databaseThreadHandler;
 
     boolean shouldMeasure;
-    //long previousTime = 0;
-
-    //DatabaseHandler databaseHandler;
 
     public Recognizer(SensorManager sensorManager,
                       PowerManager powerManager,
@@ -54,7 +49,7 @@ public class Recognizer implements Observer, Observable {
         observers = new ArrayList<>();
         activities = new ArrayList<>();
         timestamps = new ArrayList<>();
-        filteredActivities = new ConcurrentHashMap<>();
+        filteredPhysicalActivities = new ConcurrentHashMap<>();
 
         Predictor predictor = new Predictor(assetManager);
         FeatureDerivator featureDerivator = new FeatureDerivator();
@@ -94,38 +89,23 @@ public class Recognizer implements Observer, Observable {
             if (object instanceof Integer) {
                 notifyAll(null);
                 activities.add((int) object);
-//                String filteredActivity = Activities.classes.get((int) object);
+//                String filteredActivity = PhysicalActivities.classes.get((int) object);
                 if(activities.size() % 10 == 0) {
                     timestamps.add(System.currentTimeMillis());
-                    notifyAll(Activities.getNameOf((int) object));
+                    notifyAll(PhysicalActivities.getNameOf((int) object));
                 }
-                //notifyAll(filteredActivities);
-//                filteredActivities.clear();
-                if(activities.size() >= 30) { // 10, 5, 12, at least 3
-                    filterActivities();
+                //notifyAll(filteredPhysicalActivities);
+//                filteredPhysicalActivities.clear();
+                if(activities.size() >= 30) {
+                    filterPhysicalActivities();
                 }
 
             }
-            //notifyAll(object);
-//            if(observable instanceof SensorService) {
-//                if(object instanceof double[]) {
-//                    double [] data = (double [])object;
-//                    notifyAll(object);
-//                }
-//            } else if(observable instanceof FeatureDerivator) {
-//                if(object instanceof Features) {
-//                    notifyAll(object);
-//                }
-//            } else if(observable instanceof Predictor) {
-//                if(object instanceof String) {
-//                    notifyAll(object);
-//                }
-            //}
         } else if(observable instanceof LockScreenReceiver) {
             if(object instanceof Boolean) {
                 boolean screenOn = (boolean)object;
                 if(screenOn) {
-                    filterActivities();
+                    filterPhysicalActivities();
                 }
                 notifyAll(shouldMeasure && screenOn);
             }
@@ -149,36 +129,8 @@ public class Recognizer implements Observer, Observable {
         observers.add(observer);
     }
 
-    private void filterActivities() {
+    private void filterPhysicalActivities() {
         try {
-            int counter = 0;
-            int currentActivity = activities.get(0);
-            //for(int activity: activities) {
-//                    for(int i = 1; i < activities.size(); i++) {
-//                        if(currentActivity == activities.get(i)) {
-//                            counter++;
-//                        } else {
-//                            if(counter < 3) {
-//                                for(int j = i - (counter+1); j < i; j++) {
-//                                    activities.set(j, -1);
-//                                }
-//                            }
-//                            currentActivity = activities.get(i);
-//                            counter = 0;
-//                        }
-//                    }
-//                    counter = 0;
-//                    for(int i = 0; i < activities.size(); i++) {
-//                        if(activities.get(i) == -1) {
-//                            counter++;
-//                        } else {
-//                            for(int j = i- counter; j < counter; j++) {
-//                                activities.set(j, activities.get(i));
-//                            }
-//                            counter = 0;
-//                        }
-//
-//                    }
             int tenthPart = activities.size() / 10;
             for (int i = 0; i < tenthPart; i++) {
                 int[] countsArray = new int[6];
@@ -188,33 +140,17 @@ public class Recognizer implements Observer, Observable {
                 }
                 List counts = ArrayUtils.arrayToList(countsArray);
 
-                String filteredActivity = Activities.classes.get(counts.indexOf(Collections.max(counts)));
-                filteredActivities.put(timestamps.get(i), filteredActivity);
+                String filteredActivity = PhysicalActivities.classes.get(counts.indexOf(Collections.max(counts)));
+                filteredPhysicalActivities.put(timestamps.get(i), filteredActivity);
             }
 
-            //notifyAll("Before database");
-            //final Map map = filteredActivities;
-            // databaseThreadHandler.post(() ->
-            notifyAll(filteredActivities);
-            //);
-            //activities.remove(0);
+            notifyAll(filteredPhysicalActivities);
         } catch(Exception e) {
             e.printStackTrace();
         }
-        filteredActivities.clear();
+        filteredPhysicalActivities.clear();
         activities.clear();
         timestamps.clear();
     }
-
-//    private void addData(double [] data) {
-//        //Long now = System.currentTimeMillis();
-//        //Long timeDifference = now - previousTime;
-//
-//        notifyAll(data);
-//        //if(timeDifference > WORKING_RATE) { // && previousTime != 0) { //every 2 seconds
-//        //notifyAll(null);
-//        //previousTime = now;
-//        //}
-//    }
 
 }
