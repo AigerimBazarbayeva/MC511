@@ -51,8 +51,8 @@
         android:layout_width="270dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:inputType="number"
-        android:maxLength="3"
+        android:inputType="numberDecimal"
+        android:maxLength="5"
         android:hint="Weight"
         android:textColorHighlight="@color/colorPrimary"
     />

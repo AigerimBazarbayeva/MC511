@@ -18,12 +18,12 @@ import weka.core.Attribute;
 import weka.core.DenseInstance;
 import weka.core.Instances;
 
-public class Predictor implements Observer, Observable {
+public class ActivityClassPredictor implements Observer, Observable {
 
     ArrayList<Observer> observers;
     private Classifier classifier = null;
 
-    public Predictor(AssetManager assetManager) {
+    public ActivityClassPredictor(AssetManager assetManager) {
         observers = new ArrayList<>();
 
         try{

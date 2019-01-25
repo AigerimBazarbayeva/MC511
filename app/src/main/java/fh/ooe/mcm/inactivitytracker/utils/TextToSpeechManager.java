@@ -49,7 +49,7 @@ public class TextToSpeechManager implements Observer {
 
     @Override
     public void update(Observable observable, Object object) {
-        if(observable instanceof Predictor) {
+        if(observable instanceof ActivityClassPredictor) {
             if(object instanceof Integer) {
                 parent.runOnUiThread(() -> convertTextToSpeech(PhysicalActivities.getNameOf((int) object)));
             }
