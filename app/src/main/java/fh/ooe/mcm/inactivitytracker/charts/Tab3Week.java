@@ -7,14 +7,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import fh.ooe.mcm.inactivitytracker.R;
+import fh.ooe.mcm.inactivitytracker.utils.ChartingUtils;
 import fh.ooe.mcm.inactivitytracker.utils.DatabaseHandler;
 
 public class Tab3Week extends Fragment {
@@ -22,34 +27,27 @@ public class Tab3Week extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab3week, container, false);
+        View rootView = inflater.inflate(R.layout.tab2day, container, false);
 
-        BarChart barChart = (BarChart) rootView.findViewById(R.id.barchart);
+        LineChart lineChart = rootView.findViewById(R.id.linechart);
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(24 * 7 + 1);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawLabels(true);
 
-        barChart.setDrawBarShadow(false);
-        barChart.setDrawValueAboveBar(true);
-        barChart.setMaxVisibleValueCount(100);
-        barChart.setPinchZoom(false);
-        barChart.setDrawGridBackground(true);
+        long currTimestamp = System.currentTimeMillis();
+        long prevTiemstamp = currTimestamp - 7 * 24 * 60 * 60 * 1000;
 
-        ArrayList<BarEntry> barEntries = new ArrayList<>();
-        DatabaseHandler handler = new DatabaseHandler(getContext());
+        DatabaseHandler databaseHandler = new DatabaseHandler(this.getContext());
+        Map<Long, String> activitiesForDays =
+                databaseHandler.getAllPhysicalActivitiesForDays(prevTiemstamp, currTimestamp);
+        lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60 * 60));
 
-        barEntries.add(new BarEntry(1, 40f));
-        barEntries.add(new BarEntry(2, 50f));
-        barEntries.add(new BarEntry(3, 20f));
-        barEntries.add(new BarEntry(4, 30f));
-        barEntries.add(new BarEntry(5, 40f));
-        barEntries.add(new BarEntry(6, 60f));
-        barEntries.add(new BarEntry(7, 10f));
-
-        BarDataSet barDataSet = new BarDataSet(barEntries, "Data set 1");
-        barDataSet.setColors(ColorTemplate.getHoloBlue());
-
-        BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.9f);
-
-        barChart.setData(data);
+        PieChart pieChart = rootView.findViewById(R.id.pie_chart);
+        pieChart.setData(ChartingUtils.pieChart(activitiesForDays));
+        pieChart.animateY(1000);
         return rootView;
     }
 }

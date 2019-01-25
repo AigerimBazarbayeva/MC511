@@ -6,7 +6,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -14,31 +16,39 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import fh.ooe.mcm.inactivitytracker.R;
+import fh.ooe.mcm.inactivitytracker.utils.ChartingUtils;
+import fh.ooe.mcm.inactivitytracker.utils.DatabaseHandler;
 
 public class Tab1Hour extends Fragment{
-
-    float calories[] = {700, 300};
-    String hours[] = {"1pm"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab1hour, container, false);
-        List<PieEntry> pieEntries = new ArrayList<>();
-        for(int i = 0; i <  calories.length; i++){
-            pieEntries.add(new PieEntry(calories[i], hours[0]));
-        }
+        View rootView = inflater.inflate(R.layout.tab2day, container, false);
 
-        PieDataSet pieDataSet = new PieDataSet(pieEntries, "Calories per hour");
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        PieData pieData = new PieData(pieDataSet);
+        LineChart lineChart = rootView.findViewById(R.id.linechart);
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(60);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawLabels(true);
 
-        PieChart chart = (PieChart) rootView.findViewById(R.id.chart);
-        chart.setData(pieData);
-        chart.animateY(1000);
-        chart.invalidate();
+        long currTimestamp = System.currentTimeMillis();
+        long prevTimestamp = currTimestamp - 60 * 60 * 1000;
+
+        DatabaseHandler databaseHandler = new DatabaseHandler(this.getContext());
+
+        Map<Long, String> activitiesForDays =
+                databaseHandler.getAllPhysicalActivitiesForDays(prevTimestamp, currTimestamp);
+        lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60));
+
+        PieChart pieChart = rootView.findViewById(R.id.pie_chart);
+        pieChart.setData(ChartingUtils.pieChart(activitiesForDays));
+        pieChart.animateY(1000);
         return rootView;
     }
 }

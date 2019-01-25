@@ -3,12 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".charts.Main2Activity">
-    
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart"
+    android:layout_height="wrap_content"
+    tools:context=".charts.ChartingActivity">
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/linechart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.github.mikephil.charting.charts.PieChart>
+        android:layout_height="400dp">
+    </com.github.mikephil.charting.charts.LineChart>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:layout_below="@id/linechart">
+
+    </com.github.mikephil.charting.charts.PieChart>
+
 
 </RelativeLayout>

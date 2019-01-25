@@ -2,20 +2,29 @@ package fh.ooe.mcm.inactivitytracker.charts;
 
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.renderer.XAxisRenderer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import fh.ooe.mcm.inactivitytracker.R;
+import fh.ooe.mcm.inactivitytracker.utils.ChartingUtils;
+import fh.ooe.mcm.inactivitytracker.utils.DatabaseHandler;
 
 public class Tab2Day extends Fragment{
 
@@ -24,24 +33,26 @@ public class Tab2Day extends Fragment{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab2day, container, false);
 
-        LineChart lineChart = (LineChart) rootView.findViewById(R.id.linechart);
+        LineChart lineChart = rootView.findViewById(R.id.linechart);
+        XAxis xAxis = lineChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setAxisMinimum(0);
+        xAxis.setAxisMaximum(25);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawLabels(true);
 
-        ArrayList<Entry> yvalues = new ArrayList<>();
+        long currTimestamp = System.currentTimeMillis();
+        long prevTiemstamp = currTimestamp - 24 * 60 * 60 * 1000;
 
-        Random random = new Random();
-        for (int i = 0; i < 24; i++){
-            yvalues.add(new Entry(i, random.nextInt(3) + 1));
-        }
+        DatabaseHandler databaseHandler = new DatabaseHandler(this.getContext());
+        Map<Long, String> activitiesForDays =
+                databaseHandler.getAllPhysicalActivitiesForDays(prevTiemstamp, currTimestamp);
+        lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60 * 60));
 
-        LineDataSet set1 = new LineDataSet(yvalues, "Data set 1");
-        set1.setFillAlpha(110);
+        PieChart pieChart = rootView.findViewById(R.id.pie_chart);
+        pieChart.setData(ChartingUtils.pieChart(activitiesForDays));
+        pieChart.animateY(1000);
 
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-
-        LineData data = new LineData(dataSets);
-
-        lineChart.setData(data);
         return rootView;
     }
 }
