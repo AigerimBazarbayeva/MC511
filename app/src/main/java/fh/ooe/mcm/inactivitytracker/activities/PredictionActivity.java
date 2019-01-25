@@ -83,9 +83,9 @@ public class PredictionActivity extends AppCompatActivity {
 
         double caloriesPerDay = Double.valueOf(data.getCaloriesPerDay());
         double caloriesBurned = CaloriesCalculator.getCaloriesBurned(a, Double.valueOf(data.getWeight()));
-        double bmr = CaloriesCalculator.calculateBMR(data);
+        //double bmr = CaloriesCalculator.calculateBMR(data);
 
-        int comparisonResult = Double.compare(caloriesPerDay - caloriesBurned, bmr);
+        int comparisonResult = Double.compare(caloriesPerDay, caloriesBurned);
 
         BodyShapePrediction predictionResult;
 

@@ -42,7 +42,7 @@ public class Recognizer implements Observer, Observable {
     public Recognizer(SensorManager sensorManager,
                       PowerManager powerManager,
                       AssetManager assetManager,
-                      TextToSpeechManager textToSpeechManager,
+                  //    TextToSpeechManager textToSpeechManager,
                       LockScreenReceiver lockScreenReceiver,
                       DatabaseHandler databaseHandler) {
 
@@ -61,7 +61,7 @@ public class Recognizer implements Observer, Observable {
         //observers.add(textToSpeechManager);
 
         observers.add(predictor);
-        observers.add(textToSpeechManager);
+       // observers.add(textToSpeechManager);
         observers.add(databaseHandler);
         observers.add(sensorService);
         observers.add(featureDerivator);
@@ -72,7 +72,7 @@ public class Recognizer implements Observer, Observable {
         sensorService.addObserver(featureDerivator);
         //lockScreenReceiver.addObserver(sensorService);
         lockScreenReceiver.addObserver(this);
-        databaseHandler.addObserver(textToSpeechManager);
+       // databaseHandler.addObserver(textToSpeechManager);
 
         //databaseHandler.dropTable();
         //observers.add(logger);

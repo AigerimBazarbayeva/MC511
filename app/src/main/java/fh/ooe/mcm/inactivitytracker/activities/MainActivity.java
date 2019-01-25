@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements Observable {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         PowerManager powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
-        TextToSpeechManager textToSpeechManager = new TextToSpeechManager(this);
+       // TextToSpeechManager textToSpeechManager = new TextToSpeechManager(this);
 
         databaseHandler = new DatabaseHandler(this.getBaseContext());
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements Observable {
         Recognizer recognizer = new Recognizer(sensorManager,
                                                 powerManager,
                                                 getAssets(),
-                                                textToSpeechManager,
+                                  //              textToSpeechManager,
                                                 lockScreenReceiver,
                                                 databaseHandler);
 
