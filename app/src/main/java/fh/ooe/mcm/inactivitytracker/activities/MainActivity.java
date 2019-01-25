@@ -11,12 +11,6 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.ToggleButton;
 
 import java.util.ArrayList;
 
@@ -80,11 +74,15 @@ public class MainActivity extends AppCompatActivity implements Observable {
                 startActivity(dataEntryIntent);
             });
         }
-        if(chartingButton != null) {
-            chartingButton.setOnClickListener(view -> {
-                Intent chartingIntent = new Intent(this, ChartingActivity.class);
-                startActivity(chartingIntent);
-            });
+        try {
+            if (chartingButton != null) {
+                chartingButton.setOnClickListener(view -> {
+                    Intent chartingIntent = new Intent(this, ChartingActivity.class);
+                    startActivity(chartingIntent);
+                });
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
         }
         /*if(predictionButton != null) {
             predictionButton.setOnClickListener(view -> {
