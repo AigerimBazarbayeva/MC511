@@ -15,6 +15,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.util.ArrayList;
 
 import fh.ooe.mcm.inactivitytracker.R;
+import fh.ooe.mcm.inactivitytracker.utils.DatabaseHandler;
 
 public class Tab3Week extends Fragment {
 
@@ -32,6 +33,7 @@ public class Tab3Week extends Fragment {
         barChart.setDrawGridBackground(true);
 
         ArrayList<BarEntry> barEntries = new ArrayList<>();
+        DatabaseHandler handler = new DatabaseHandler(getContext());
 
         barEntries.add(new BarEntry(1, 40f));
         barEntries.add(new BarEntry(2, 50f));

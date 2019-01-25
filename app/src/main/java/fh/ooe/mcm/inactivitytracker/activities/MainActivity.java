@@ -21,6 +21,7 @@ import android.widget.ToggleButton;
 import java.util.ArrayList;
 
 import fh.ooe.mcm.inactivitytracker.R;
+import fh.ooe.mcm.inactivitytracker.charts.ChartingActivity;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observable;
 import fh.ooe.mcm.inactivitytracker.interfaces.Observer;
 import fh.ooe.mcm.inactivitytracker.ui.CircleButton;
@@ -79,18 +80,18 @@ public class MainActivity extends AppCompatActivity implements Observable {
                 startActivity(dataEntryIntent);
             });
         }
-//        if(chartingButton != null) {
-//            chartingButton.setOnClickListener(view -> {
-//                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
-//                startActivity(dataEntryIntent);
-//            });
-//        }
-//        if(predictionButton != null) {
-//            predictionButton.setOnClickListener(view -> {
-//                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
-//                startActivity(dataEntryIntent);
-//            });
-//        }
+        if(chartingButton != null) {
+            chartingButton.setOnClickListener(view -> {
+                Intent chartingIntent = new Intent(this, ChartingActivity.class);
+                startActivity(chartingIntent);
+            });
+        }
+        /*if(predictionButton != null) {
+            predictionButton.setOnClickListener(view -> {
+                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
+                startActivity(dataEntryIntent);
+            });
+        }*/
 
         if(trackingSwitch != null) {
             trackingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
