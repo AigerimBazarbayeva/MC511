@@ -8,4 +8,8 @@
     <string name="tab_text_3">Week</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="getting_slim">You are loosing weight! I guess you can have one more cookie</string>
+    <string name="stable">You are keeping current shape. Ask yourself, if its good or bad</string>
+    <string name="getting_fat">Uah... next time better jog to get that burger ...</string>
+
 </resources>

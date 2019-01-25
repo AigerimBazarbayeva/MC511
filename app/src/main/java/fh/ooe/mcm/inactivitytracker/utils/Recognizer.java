@@ -51,7 +51,7 @@ public class Recognizer implements Observer, Observable {
         timestamps = new ArrayList<>();
         filteredPhysicalActivities = new ConcurrentHashMap<>();
 
-        Predictor predictor = new Predictor(assetManager);
+        ActivityClassPredictor predictor = new ActivityClassPredictor(assetManager);
         FeatureDerivator featureDerivator = new FeatureDerivator();
         SensorService sensorService = new SensorService(sensorManager, powerManager);
         //Logger logger = new Logger(this); TODO
@@ -85,7 +85,7 @@ public class Recognizer implements Observer, Observable {
 
     @Override
     public void update(Observable observable, Object object) {
-        if(observable instanceof Predictor) {
+        if(observable instanceof ActivityClassPredictor) {
             if (object instanceof Integer) {
                 notifyAll(null);
                 activities.add((int) object);

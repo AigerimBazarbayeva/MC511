@@ -11,15 +11,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import fh.ooe.mcm.inactivitytracker.R;
+import fh.ooe.mcm.inactivitytracker.models.PersonalData;
+import fh.ooe.mcm.inactivitytracker.utils.PersonalDataPreferences;
 
 public class DataEntryActivity extends AppCompatActivity {
-
-    final String PERSONAL_DATA_KEY = "PERSONAL_DATA";
-    final String AGE_KEY = "AGE";
-    final String GENDER_KEY = "GENDER";
-    final String HEIGHT_KEY = "HEIGHT";
-    final String WEIGHT_KEY = "WEIGHT";
-    final String CALORIES_PER_DAY_KEY = "CALORIES_PER_DAY";
 
     EditText age;
     RadioGroup gender;
@@ -27,7 +22,7 @@ public class DataEntryActivity extends AppCompatActivity {
     EditText weight;
     EditText caloriesPerDay;
 
-    SharedPreferences sharedPreferences;
+    SharedPreferences personalDataPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,37 +35,44 @@ public class DataEntryActivity extends AppCompatActivity {
         weight = findViewById(R.id.weight);
         caloriesPerDay = findViewById(R.id.caloriesPerDay);
 
+        //PersonalData data = PersonalDataPreferences.getPersonalData(this);
 
+//        age.setText(data.getAge());
+//        int id = data.getGenderAsInteger();
+//        ((RadioButton) gender.getChildAt(id)).setChecked(true);
+//        height.setText(data.getHeight());
+//        weight.setText(data.getWeight());
+//        caloriesPerDay.setText(data.getCaloriesPerDay());
+        personalDataPreferences = getSharedPreferences(PersonalDataPreferences.PREFERENCE_KEY, Context.MODE_PRIVATE);
 
-        sharedPreferences = getSharedPreferences(PERSONAL_DATA_KEY, Context.MODE_PRIVATE);
-
-        if(sharedPreferences.contains(AGE_KEY)) {
-            age.setText(sharedPreferences.getString(AGE_KEY, ""));
+        if(personalDataPreferences.contains(PersonalDataPreferences.AGE_KEY)) {
+            age.setText(personalDataPreferences.getString(PersonalDataPreferences.AGE_KEY, ""));
         }
-        if(sharedPreferences.contains(GENDER_KEY)) {
-            int id =  sharedPreferences.getInt(GENDER_KEY, 0);
+        if(personalDataPreferences.contains(PersonalDataPreferences.GENDER_KEY)) {
+            int id =  personalDataPreferences.getInt(PersonalDataPreferences.GENDER_KEY, 0);
             ((RadioButton) gender.getChildAt(id)).setChecked(true);
         }
-        if(sharedPreferences.contains(HEIGHT_KEY)) {
-            height.setText(sharedPreferences.getString(HEIGHT_KEY, ""));
+        if(personalDataPreferences.contains(PersonalDataPreferences.HEIGHT_KEY)) {
+            height.setText(personalDataPreferences.getString(PersonalDataPreferences.HEIGHT_KEY, ""));
         }
-        if(sharedPreferences.contains(WEIGHT_KEY)) {
-            weight.setText(sharedPreferences.getString(WEIGHT_KEY, ""));
+        if(personalDataPreferences.contains(PersonalDataPreferences.WEIGHT_KEY)) {
+            weight.setText(personalDataPreferences.getString(PersonalDataPreferences.WEIGHT_KEY, ""));
         }
-        if(sharedPreferences.contains(CALORIES_PER_DAY_KEY)) {
-            caloriesPerDay.setText(sharedPreferences.getString(CALORIES_PER_DAY_KEY, ""));
+        if(personalDataPreferences.contains(PersonalDataPreferences.CALORIES_PER_DAY_KEY)) {
+            caloriesPerDay.setText(personalDataPreferences.getString(PersonalDataPreferences.CALORIES_PER_DAY_KEY, ""));
         }
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        Editor editor = sharedPreferences.edit();
-        editor.putString(AGE_KEY, age.getText().toString());
-        editor.putInt(GENDER_KEY, indexOfSelectedGender());
-        editor.putString(HEIGHT_KEY, height.getText().toString());
-        editor.putString(WEIGHT_KEY, weight.getText().toString());
-        editor.putString(CALORIES_PER_DAY_KEY, caloriesPerDay.getText().toString());
+
+        Editor editor = personalDataPreferences.edit();
+        editor.putString(PersonalDataPreferences.AGE_KEY, age.getText().toString());
+        editor.putInt(PersonalDataPreferences.GENDER_KEY, indexOfSelectedGender());
+        editor.putString(PersonalDataPreferences.HEIGHT_KEY, height.getText().toString());
+        editor.putString(PersonalDataPreferences.WEIGHT_KEY, weight.getText().toString());
+        editor.putString(PersonalDataPreferences.CALORIES_PER_DAY_KEY, caloriesPerDay.getText().toString());
         editor.commit();
     }
 

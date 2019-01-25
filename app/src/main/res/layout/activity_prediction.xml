@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".activities.MainActivity">
 
-    <include layout="@layout/content_data_entry" />
+    <include layout="@layout/content_prediction" />
 
 
 </android.support.design.widget.CoordinatorLayout>

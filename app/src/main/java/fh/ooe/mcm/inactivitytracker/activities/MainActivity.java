@@ -84,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements Observable {
         }catch(Exception e) {
             e.printStackTrace();
         }
-        /*if(predictionButton != null) {
+        if(predictionButton != null) {
             predictionButton.setOnClickListener(view -> {
-                Intent dataEntryIntent = new Intent(this, DataEntryActivity.class);
-                startActivity(dataEntryIntent);
+                Intent predictionIntent = new Intent(this, PredictionActivity.class);
+                startActivity(predictionIntent);
             });
-        }*/
+        }
 
         if(trackingSwitch != null) {
             trackingSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {

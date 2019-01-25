@@ -19,4 +19,5 @@ public class PhysicalActivities {
     public final static String getNameOf(int i) {
         return classes.get(i);
     }
+
 }
