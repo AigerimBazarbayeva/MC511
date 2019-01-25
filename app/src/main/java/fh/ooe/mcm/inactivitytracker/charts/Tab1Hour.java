@@ -29,13 +29,13 @@ public class Tab1Hour extends Fragment{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab2day, container, false);
 
-        LineChart lineChart = rootView.findViewById(R.id.linechart);
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(60);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawLabels(true);
+        //LineChart lineChart = rootView.findViewById(R.id.linechart);
+        //XAxis xAxis = lineChart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxis.setAxisMinimum(0);
+//        xAxis.setAxisMaximum(60);
+//        xAxis.setDrawAxisLine(true);
+//        xAxis.setDrawLabels(true);
 
         long currTimestamp = System.currentTimeMillis();
         long prevTimestamp = currTimestamp - 60 * 60 * 1000;
@@ -44,7 +44,7 @@ public class Tab1Hour extends Fragment{
 
         Map<Long, String> activitiesForDays =
                 databaseHandler.getAllPhysicalActivitiesForDays(prevTimestamp, currTimestamp);
-        lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60));
+        //lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60));
 
         PieChart pieChart = rootView.findViewById(R.id.pie_chart);
         pieChart.setData(ChartingUtils.pieChart(activitiesForDays));

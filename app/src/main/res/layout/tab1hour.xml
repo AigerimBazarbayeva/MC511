@@ -6,17 +6,16 @@
     android:layout_height="wrap_content"
     tools:context=".charts.ChartingActivity">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/linechart"
-        android:layout_width="match_parent"
-        android:layout_height="400dp">
-    </com.github.mikephil.charting.charts.LineChart>
+    <!--<com.github.mikephil.charting.charts.LineChart-->
+        <!--android:id="@+id/linechart"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="400dp">-->
+    <!--</com.github.mikephil.charting.charts.LineChart>-->
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pie_chart"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_below="@id/linechart">
+        android:layout_height="400dp">
 
     </com.github.mikephil.charting.charts.PieChart>
 

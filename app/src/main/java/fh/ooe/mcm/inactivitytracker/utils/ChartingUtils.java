@@ -18,28 +18,28 @@ import java.util.Map;
 
 public class ChartingUtils {
 
-    public static LineData lineChart(Map<Long, String> activitiesForDays, int divideBy) {
-        long currTimestamp = System.currentTimeMillis();
-        Map<Long, Integer> points = new HashMap<>();
-        for (Map.Entry<Long, String> entry : activitiesForDays.entrySet()) {
-            long hour = (currTimestamp - entry.getKey()) / divideBy;
-            int prev = points.containsKey(hour) ? points.get(hour) : 0;
-            points.put(hour, prev + 1);
-        }
-
-        ArrayList<Entry> yvalues = new ArrayList<>();
-        for (Map.Entry<Long, Integer> entry : points.entrySet()) {
-            yvalues.add(new Entry(entry.getKey(), entry.getValue()));
-        }
-
-        LineDataSet set1 = new LineDataSet(yvalues, "Data set 1");
-        set1.setFillAlpha(110);
-
-        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
-        dataSets.add(set1);
-
-        return  new LineData(dataSets);
-    }
+//    public static LineData lineChart(Map<Long, String> activitiesForDays, int divideBy) {
+//        long currTimestamp = System.currentTimeMillis();
+//        Map<Long, Integer> points = new HashMap<>();
+//        for (Map.Entry<Long, String> entry : activitiesForDays.entrySet()) {
+//            long hour = (currTimestamp - entry.getKey()) / divideBy;
+//            int prev = points.containsKey(hour) ? points.get(hour) : 0;
+//            points.put(hour, prev + 1);
+//        }
+//
+//        ArrayList<Entry> yvalues = new ArrayList<>();
+//        for (Map.Entry<Long, Integer> entry : points.entrySet()) {
+//            yvalues.add(new Entry(entry.getKey(), entry.getValue()));
+//        }
+//
+//        LineDataSet set1 = new LineDataSet(yvalues, "Data set 1");
+//        set1.setFillAlpha(110);
+//
+//        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+//        dataSets.add(set1);
+//
+//        return  new LineData(dataSets);
+//    }
 
     public static PieData pieChart(Map<Long, String> activitiesForDays) {
         Map<String, Integer> cnts = new HashMap<>();

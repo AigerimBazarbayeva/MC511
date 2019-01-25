@@ -33,13 +33,13 @@ public class Tab2Day extends Fragment{
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab2day, container, false);
 
-        LineChart lineChart = rootView.findViewById(R.id.linechart);
-        XAxis xAxis = lineChart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setAxisMinimum(0);
-        xAxis.setAxisMaximum(25);
-        xAxis.setDrawAxisLine(true);
-        xAxis.setDrawLabels(true);
+//        LineChart lineChart = rootView.findViewById(R.id.linechart);
+//        XAxis xAxis = lineChart.getXAxis();
+//        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+//        xAxis.setAxisMinimum(0);
+//        xAxis.setAxisMaximum(25);
+//        xAxis.setDrawAxisLine(true);
+//        xAxis.setDrawLabels(true);
 
         long currTimestamp = System.currentTimeMillis();
         long prevTiemstamp = currTimestamp - 24 * 60 * 60 * 1000;
@@ -47,7 +47,7 @@ public class Tab2Day extends Fragment{
         DatabaseHandler databaseHandler = new DatabaseHandler(this.getContext());
         Map<Long, String> activitiesForDays =
                 databaseHandler.getAllPhysicalActivitiesForDays(prevTiemstamp, currTimestamp);
-        lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60 * 60));
+        //lineChart.setData(ChartingUtils.lineChart(activitiesForDays, 1000 * 60 * 60));
 
         PieChart pieChart = rootView.findViewById(R.id.pie_chart);
         pieChart.setData(ChartingUtils.pieChart(activitiesForDays));
