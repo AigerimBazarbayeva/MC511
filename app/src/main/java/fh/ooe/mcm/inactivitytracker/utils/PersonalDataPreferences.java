@@ -2,7 +2,6 @@ package fh.ooe.mcm.inactivitytracker.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.widget.RadioButton;
 
 import fh.ooe.mcm.inactivitytracker.models.PersonalData;
 
@@ -20,20 +19,28 @@ public class PersonalDataPreferences {
 
         PersonalData data = new PersonalData();
 
-        if(personalDataPreferences.contains(AGE_KEY)) {
-            data.setAge(personalDataPreferences.getString(AGE_KEY, ""));
+        if (personalDataPreferences.contains(AGE_KEY)) {
+            String age = personalDataPreferences.getString(AGE_KEY, "0");
+            if(age.isEmpty()) age = "0";
+            data.setAge(Integer.parseInt(age));
         }
-        if(personalDataPreferences.contains(GENDER_KEY)) {
+        if (personalDataPreferences.contains(GENDER_KEY)) {
             data.setGenderFromInt(personalDataPreferences.getInt(GENDER_KEY, 0));
         }
-        if(personalDataPreferences.contains(HEIGHT_KEY)) {
-            data.setHeight(personalDataPreferences.getString(HEIGHT_KEY, ""));
+        if (personalDataPreferences.contains(HEIGHT_KEY)) {
+            String height = personalDataPreferences.getString(HEIGHT_KEY, "0");
+            if(height.isEmpty()) height = "0";
+            data.setHeight(Integer.parseInt(height));
         }
-        if(personalDataPreferences.contains(WEIGHT_KEY)) {
-            data.setWeight(personalDataPreferences.getString(WEIGHT_KEY, ""));
+        if (personalDataPreferences.contains(WEIGHT_KEY)) {
+            String weight = personalDataPreferences.getString(WEIGHT_KEY, "0");
+            if(weight.isEmpty()) weight = "0";
+            data.setWeight(Float.parseFloat(weight));
         }
-        if(personalDataPreferences.contains(CALORIES_PER_DAY_KEY)) {
-            data.setCaloriesPerDay(personalDataPreferences.getString(CALORIES_PER_DAY_KEY, ""));
+        if (personalDataPreferences.contains(CALORIES_PER_DAY_KEY)) {
+            String calendarPerDay = personalDataPreferences.getString(CALORIES_PER_DAY_KEY, "0");
+            if(calendarPerDay.isEmpty()) calendarPerDay = "0";
+            data.setCaloriesPerDay(Integer.parseInt(calendarPerDay));
         }
 
         return data;

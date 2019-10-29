@@ -1,12 +1,10 @@
 package fh.ooe.mcm.inactivitytracker.utils;
 
-import android.app.Activity;
 import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import fh.ooe.mcm.inactivitytracker.PhysicalActivities;
 import fh.ooe.mcm.inactivitytracker.Features;

@@ -1,21 +1,18 @@
 package fh.ooe.mcm.inactivitytracker.models;
 
-import android.widget.EditText;
-import android.widget.RadioGroup;
-
 public class PersonalData {
 
     public enum Gender {
         MALE, FEMALE
     }
 
-    String age;
-    Gender gender;
-    String height;
-    String weight;
-    String caloriesPerDay;
+    int age;
+    Gender gender = Gender.MALE;
+    int height;
+    float weight;
+    int caloriesPerDay;
 
-    public String getAge() {
+    public int getAge() {
         return age;
     }
 
@@ -27,19 +24,39 @@ public class PersonalData {
         return gender.ordinal();
     }
 
-    public String getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public String getWeight() {
+    public float getWeight() {
         return weight;
     }
 
-    public String getCaloriesPerDay() {
+    public int getCaloriesPerDay() {
         return caloriesPerDay;
     }
 
-    public void setAge(String age) {
+    public String getAgeAsString() {
+        return age > 0 ? String.valueOf(age) : "";
+    }
+
+    public String getGenderAsString() {
+        return gender.toString();
+    }
+
+    public String getHeightAsString() {
+        return height > 0 ? String.valueOf(height) : "";
+    }
+
+    public String getWeightAsString() {
+        return weight > 0 ? String.valueOf(weight) : "";
+    }
+
+    public String getCaloriesPerDayAsString() {
+        return caloriesPerDay > 0 ? String.valueOf(caloriesPerDay) : "";
+    }
+
+    public void setAge(int age) {
         this.age = age;
     }
 
@@ -51,15 +68,15 @@ public class PersonalData {
         this.gender = Gender.values()[gender];
     }
 
-    public void setHeight(String height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 
-    public void setWeight(String weight) {
+    public void setWeight(float weight) {
         this.weight = weight;
     }
 
-    public void setCaloriesPerDay(String caloriesPerDay) {
+    public void setCaloriesPerDay(int caloriesPerDay) {
         this.caloriesPerDay = caloriesPerDay;
     }
 }
